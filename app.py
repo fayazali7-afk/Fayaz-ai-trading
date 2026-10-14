@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timedelta
 
-from flask import Flask, jsonify, redirect, request
+from flask import Flask, jsonify, redirect, request, send_from_directory
 from kiteconnect import KiteConnect
 
 app = Flask(__name__)
@@ -28,18 +28,7 @@ def get_kite():
 
 @app.route("/")
 def home():
-    return jsonify({
-        "system": "FAYAZ PRO",
-        "status": "Backend running",
-        "market_data": (
-            "Connected" if access_token else "Login required"
-        ),
-        "trading_mode": "Paper",
-        "login_endpoint": "/login",
-        "quote_endpoint": "/api/quote",
-        "candles_endpoint": "/api/candles?interval=5minute",
-        "orders_enabled": False
-    })
+    return send_from_directory(".", "index.html")
 
 
 @app.route("/health")
