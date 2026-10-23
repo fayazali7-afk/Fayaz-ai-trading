@@ -1,3 +1,4 @@
 kiteconnect
 flask
 gunicorn
+openai
