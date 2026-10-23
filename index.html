@@ -17,6 +17,79 @@ main{padding:18px 0 40px}.section-title{display:flex;align-items:center;gap:9px;
 .toolbar{display:flex;gap:10px;align-items:end;flex-wrap:wrap}.toolbar>div{flex:1;min-width:125px}.summary{margin-top:8px}.dailyrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 3px;border-bottom:1px solid var(--line)}.dailyrow:last-child{border-bottom:0}.dailyrow small{display:block;color:var(--muted);font-size:11px;margin-top:4px}.dailyrow strong{font-variant-numeric:tabular-nums}.badge{display:inline-block;padding:4px 8px;border-radius:7px;background:#4f8cff20;color:#9ec2ff;font-size:10px;font-weight:900}.tablewrap{overflow-x:auto;margin-top:13px;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;min-width:800px;font-size:12px}th,td{text-align:left;padding:12px 10px;border-bottom:1px solid #26344b;white-space:nowrap}th{font-size:10px;color:#a9b9d5;background:#1a263d}tr:last-child td{border-bottom:0}tbody tr:hover{background:#ffffff05}.num{text-align:right;font-variant-numeric:tabular-nums}.profit{color:var(--green)!important;font-weight:900}.loss{color:var(--red)!important;font-weight:900}.empty{text-align:center;color:var(--muted);padding:25px}.footer{text-align:center;color:#7789a8;font-size:10px;line-height:1.7;margin:23px 0 0}.footpill{display:inline-block;margin-top:8px;border:1px solid #ffffff15;padding:6px 10px;border-radius:30px}
 @media(max-width:650px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.top{align-items:flex-start}.livepill{font-size:9px;padding:6px 8px}.logo{width:43px;height:43px}h1{font-size:20px}.card{padding:13px}.stat{padding:13px}}
 @media(max-width:380px){.grid{grid-template-columns:1fr}.sub{font-size:10px}}
+  /* FAYAZ PRO UI REFRESH — paste this at the END of the existing <style> block */
+:root{
+  --bg:#080e19;--panel:#101a2b;--panel2:#142239;--line:#263953;
+  --text:#edf4ff;--muted:#8fa4c2;--blue:#6394ff;--cyan:#42d9e8;
+  --green:#35d49a;--red:#ff6f86;--yellow:#ffc96b;--purple:#a78bfa;
+}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  background:radial-gradient(ellipse at 12% 0%,#16305a55,transparent 35%),
+  radial-gradient(ellipse at 100% 10%,#29265a44,transparent 30%),var(--bg);
+  font-family:Inter,system-ui,-apple-system,"Noto Sans Tamil",Arial,sans-serif!important;
+  letter-spacing:0!important;
+}
+*{font-family:Inter,system-ui,-apple-system,"Noto Sans Tamil",Arial,sans-serif}
+header{position:sticky;top:0;z-index:20;background:#080e19ed;backdrop-filter:blur(16px)}
+.top{min-height:66px}
+.logo{border-radius:14px;box-shadow:0 8px 28px #6394ff30}
+h1{font-size:22px;letter-spacing:-.5px}
+.eyebrow{letter-spacing:1.6px}
+main{padding-top:22px}
+.section-title{font-size:16px;font-weight:850;letter-spacing:-.2px;margin-top:27px}
+.section-title .ico{border:1px solid #42d9e822}
+.stats{gap:12px}
+.stat,.card{
+  border-color:var(--line);
+  background:linear-gradient(145deg,#142239f5,#0d1625f5);
+  box-shadow:0 12px 30px #0002;
+}
+.stat{border-radius:16px;padding:16px}
+.stat strong{font-size:clamp(19px,3.5vw,25px);letter-spacing:-.4px}
+.stat small,label,.mini,.sub,.note,.footer{letter-spacing:0}
+.card{border-radius:17px;padding:17px}
+label{font-size:12px;color:#a9bbd4;font-weight:750}
+input,select{
+  background:#0a1423;border:1px solid #2b405e;border-radius:10px;
+  padding:12px;color:var(--text);font-size:14px;min-height:44px
+}
+input:focus,select:focus{border-color:var(--cyan);box-shadow:0 0 0 3px #42d9e81b}
+button{border-radius:10px;padding:12px 15px;font-size:13px;font-weight:800}
+.primary{background:linear-gradient(100deg,var(--cyan),var(--blue));color:#06111e}
+.secondary{background:#1b2b43;color:#dce8fa;border-color:#304663}
+.darkbtn{background:linear-gradient(100deg,#8b7cff,#587fff);color:#fff}
+.danger{background:#ff6f8614;color:#ff8b9e;border-color:#ff6f8640}
+.toolbar{gap:12px}
+.dailyrow{padding:14px 3px}
+.tablewrap{border-radius:12px}
+th{background:#17263d;color:#a9bbd4;letter-spacing:.4px}
+td,th{padding:13px 11px}
+.badge{border-radius:7px}
+.warning{border-radius:12px}
+.footer{font-size:11px;line-height:1.8}
+.footpill{padding:7px 12px}
+@media(min-width:800px){
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
+@media(max-width:650px){
+  .wrap{padding-left:13px;padding-right:13px}
+  .top{align-items:flex-start}
+  h1{font-size:19px}
+  .logo{width:42px;height:42px}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+  .stat{padding:13px}
+  .card{padding:13px}
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .section-title{font-size:15px;margin-top:23px}
+  .actions{gap:8px}
+  .actions button{padding:11px 12px}
+}
+@media(max-width:380px){
+  .grid{grid-template-columns:1fr}
+  .sub{font-size:10px}
+}
 </style></head>
 <body>
 <header><div class="wrap"><div class="top"><div class="brand"><div class="logo">F</div><div><div class="eyebrow">FAYAZ PRO · TRADING TOOLS</div><h1>Daily Profit / Loss</h1><div class="sub">உங்கள் தினசரி trading கணக்கு · Date-wise journal</div></div></div><div class="livepill">● JOURNAL ACTIVE</div></div></div></header>
