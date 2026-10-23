@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from flask import Flask, jsonify, redirect, request, send_from_directory
 from kiteconnect import KiteConnect
-
+from openai import OpenAI
 app = Flask(__name__)
 
 API_KEY = os.environ.get("KITE_API_KEY")
@@ -157,7 +157,96 @@ def candles():
             "error": "Could not fetch candles. Check Kite session and API plan."
         }), 502
 
+# FAYAZ PRO AI ANALYSIS
+_ai_last_request = {}
 
+@app.route("/api/ai/signal", methods=["POST"])
+def ai_signal():
+    import time
+
+    # Protect the paid AI endpoint
+    required_token = os.environ.get("AI_ENDPOINT_TOKEN")
+    supplied_token = request.headers.get("X-AI-TOKEN", "")
+
+    if not required_token or supplied_token != required_token:
+        return jsonify({"error": "Unauthorized"}), 401
+
+    # Basic rate limit: one request per IP every 60 seconds
+    ip = request.remote_addr or "unknown"
+    now = time.time()
+
+    if now - _ai_last_request.get(ip, 0) < 60:
+        return jsonify({
+            "error": "Please wait 60 seconds before retrying."
+        }), 429
+
+    _ai_last_request[ip] = now
+
+    if not os.environ.get("OPENAI_API_KEY"):
+        return jsonify({
+            "error": "OpenAI API key is not configured."
+        }), 500
+
+    try:
+        end = datetime.now()
+        start = end - timedelta(days=5)
+
+        candles_5m = get_kite().historical_data(
+            instrument_token=256265,
+            from_date=start,
+            to_date=end,
+            interval="5minute"
+        )
+
+        candles_15m = get_kite().historical_data(
+            instrument_token=256265,
+            from_date=start,
+            to_date=end,
+            interval="15minute"
+        )
+
+        if len(candles_5m) < 20 or len(candles_15m) < 20:
+            return jsonify({
+                "error": "Not enough market candles. Check Kite login."
+            }), 503
+
+        market_data = {
+            "symbol": "NIFTY 50",
+            "recent_5m_candles": candles_5m[-30:],
+            "recent_15m_candles": candles_15m[-20:]
+        }
+
+        client = OpenAI(
+            api_key=os.environ["OPENAI_API_KEY"]
+        )
+
+        response = client.responses.create(
+            model="gpt-5-mini",
+            input=(
+                "Analyze this NIFTY 50 OHLCV data. "
+                "Return a cautious intraday assessment with "
+                "signal BUY CE, BUY PE, WAIT, or NO TRADE. "
+                "Assess EMA20 trend and breakout evidence where "
+                "possible. Do not invent missing CPR levels. "
+                "If evidence is insufficient, choose WAIT or NO TRADE. "
+                "Explain entry conditions, invalidation, and risks. "
+                "This is analysis only, not an order. "
+                "Data: " + str(market_data)
+            )
+        )
+
+        return jsonify({
+            "symbol": "NIFTY 50",
+            "analysis": response.output_text,
+            "orders_enabled": False
+        })
+
+    except Exception:
+        app.logger.exception("FAYAZ PRO AI analysis failed")
+        return jsonify({
+            "error": "Analysis failed. Check Render logs and Kite login."
+        }), 502
+        
 if __name__ == "__main__":
     app.run(
         host="0.0.0.0",
